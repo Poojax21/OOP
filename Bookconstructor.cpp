@@ -1,61 +1,87 @@
 #include <iostream>
+#include <string>
+#include <cctype>
 using namespace std;
 
+bool validName(string s) {
+    if (s.length() == 0) return false;
+    for (int i = 0; i < s.length(); i++) {
+        if (!isalpha(s[i]) && s[i] != ' ')
+            return false;
+    }
+    return true;
+}
+
 class Book {
-public:
-    int bookID;
-    string bookName;
+    int b_id;
+    string b_name;
     string author;
     float price;
 
+public:
     Book() {
-        cout << "Enter Book ID: ";
-        cin >> bookID;
+        while (true) {
+            cout << "Enter Book ID: ";
+            cin >> b_id;
+            if (b_id > 0) break;
+            cout << "Invalid ID\n";
+        }
+
         cin.ignore();
 
-        cout << "Enter Book Name: ";
-        getline(cin, bookName);
+        while (true) {
+            cout << "Enter Book Name: ";
+            getline(cin, b_name);
+            if (validName(b_name)) break;
+            cout << "Invalid Name\n";
+        }
 
-        cout << "Enter Author Name: ";
-        getline(cin, author);
+        while (true) {
+            cout << "Enter Author: ";
+            getline(cin, author);
+            if (validName(author)) break;
+            cout << "Invalid Author\n";
+        }
 
-        cout << "Enter Price: ";
-        cin >> price;
+        while (true) {
+            cout << "Enter Price: ";
+            cin >> price;
+            if (price > 0) break;
+            cout << "Invalid Price\n";
+        }
+
         cin.ignore();
-
-        cout << "\nBook object created successfully!\n\n";
     }
 
     void display() {
-        cout << "Book Details:\n";
-        cout << "ID: " << bookID << "\n";
-        cout << "Name: " << bookName << "\n";
-        cout << "Author: " << author << "\n";
-        cout << "Price: $" << price << "\n\n";
+        cout << "ID: " << b_id << endl;
+        cout << "Name: " << b_name << endl;
+        cout << "Author: " << author << endl;
+        cout << "Price: " << price << endl << endl;
     }
 
     ~Book() {
-        cout << "Book object with ID " << bookID << " is being destroyed.\n";
+        cout << "Book ID " << b_id << " deleted\n";
     }
 };
 
 int main() {
     int n;
-    cout << "How many books do you want to enter? ";
-    cin >> n;
-    cin.ignore();
-
-    
-    Book* books = new Book[n];
-
-    cout << "\nDisplaying all book details:\n";
-    for (int i = 0; i < n; i++) {
-        cout << "Book " << i + 1 << ":\n";
-        books[i].display();
+    while (true) {
+        cout << "How many books? ";
+        cin >> n;
+        if (n > 0) break;
+        cout << "Invalid number\n";
     }
 
-    
-    delete[] books;
+    Book* b = new Book[n];
 
+    cout << "\nAll Books:\n";
+    for (int i = 0; i < n; i++) {
+        cout << "Book " << i + 1 << ":\n";
+        b[i].display();
+    }
+
+    delete[] b;
     return 0;
 }
